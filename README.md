@@ -28,4 +28,5 @@ Final Models:
 -   LDA still served as a useful benchmark but performed sub-optimally for this context-rich dataset.
    
 
-to further work on this idea.- we can try to tokenize using GP4 tokenizer. then embedd using BERTNomic which is specifically made for topic modelling tasks of longer lenghts. 
+For future implementations we can try to tokenize using GP4 tokenizer. then embedd using BERTNomic which is specifically made for topic modelling tasks of longer lenghts. 
+We can even use ChatGPT or other models from OpenAI to generate labels, summaries, phrases.
