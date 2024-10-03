@@ -1,8 +1,8 @@
 # UnsupervisedClustering
-BERTopic visualization :
+- BERTopic visualization :
 ![{4B18F474-3253-440E-9C3A-648C51A6F63B}](https://github.com/user-attachments/assets/cc633974-73b4-4caf-8cff-8c9c06d3ccd8)
 ![{613EDF5A-4A9A-47A0-A835-405BE6F6E7CE}](https://github.com/user-attachments/assets/b9508546-d843-4036-b684-598b880bfe0e)
-Topic model heirarchial clustering : ![{ECB7E0C7-A336-4FC1-924E-5F2CDD413A24}](https://github.com/user-attachments/assets/2f0122ee-9827-49c6-8540-a38d7f6f9b49)
+- Topic model heirarchial clustering : ![{ECB7E0C7-A336-4FC1-924E-5F2CDD413A24}](https://github.com/user-attachments/assets/2f0122ee-9827-49c6-8540-a38d7f6f9b49)
 
 Topic Modelling
 Topic Modeling Process:
