@@ -6,15 +6,16 @@ Topic model heirarchial clustering : ![{ECB7E0C7-A336-4FC1-924E-5F2CDD413A24}](h
 
 Topic Modelling
 Topic Modeling Process:
-    - Loading the Dataset: The dataset consists of approximately 40k text examples.
-    - Cleaning the Text: The text is cleaned by removing stop words and unnecessary symbols.
-    - Finding Important Words: Word factorization is used to identify important words in each document.
-    - Topic Modeling with LDA: Latent Dirichlet Allocation (LDA) is applied to group similar words into topics based on word distributions.
-    - Text Embeddings using BERT: BERT embeddings are used to capture the semantic meaning of each document. This is followed by:
+- Loading the Dataset: The dataset consists of approximately 40k text examples.
+-  Cleaning the Text: The text is cleaned by removing stop words and unnecessary symbols.
+-  Finding Important Words: Word factorization is used to identify important words in each document.
+-  Topic Modeling with LDA: Latent Dirichlet Allocation (LDA) is applied to group similar words into topics based on word distributions.
+-  Text Embeddings using BERT: BERT embeddings are used to capture the semantic meaning of each document. This is followed by:
         UMAP: For dimensionality reduction.
         HDBSCAN: For clustering the documents into meaningful groups.
-    - Topic Labeling: The most relevant words from each topic are used to assign labels to the topics.
-    - Visualization: The topics are visualized to display their distribution and relationships.
+- Topic Labeling: The most relevant words from each topic are used to assign labels to the topics.
+- Visualization: The topics are visualized to display their distribution and relationships.
+    
 Approach:
   Algorithms Used:
     * **LDA**: A classical topic modeling technique that identifies distinct topics by modeling the distribution of words across documents. It is effective for simpler, non-contextual tasks but has limitations in capturing deeper semantic meanings.
