@@ -18,14 +18,14 @@ Topic Modeling Process:
     
 Approach:
   Algorithms Used:
-    * **LDA**: A classical topic modeling technique that identifies distinct topics by modeling the distribution of words across documents. It is effective for simpler, non-contextual tasks but has limitations in capturing deeper semantic meanings.
-    * **BERTopic**: A more advanced method that uses BERT embeddings to capture semantic relationships within the text. Paired with UMAP for dimensionality reduction and HDBSCAN for clustering, BERTopic is well-suited for complex, context-dependent text datasets like the one in this project.
+* **LDA**: A classical topic modeling technique that identifies distinct topics by modeling the distribution of words across documents. It is effective for simpler, non-contextual tasks but has limitations in capturing deeper semantic meanings.
+* **BERTopic**: A more advanced method that uses BERT embeddings to capture semantic relationships within the text. Paired with UMAP for dimensionality reduction and HDBSCAN for clustering, BERTopic is well-suited for complex, context-dependent text datasets like the one in this project.
   Challenges and Solutions:
-    * **Contextualized Topic Models**: I experimented with contextualized_topic_models, but they didn't yield valid or relevant results for the dataset.
-    * **NomicBERT**: A high-level model, NomicBERT, was tested but was computationally expensive. It ran for over 6 hours on Kaggle without completing due to the size of the dataset (~40k examples). As a result, I pivoted to LDA and BERTopic, which were more efficient and provided better results for the dataset size.
-    Final Models:
-    BERTopic produced the most coherent and contextually relevant topics, making it the preferred model over LDA.
-    LDA still served as a useful benchmark but performed sub-optimally for this context-rich dataset.
+* **Contextualized Topic Models**: I experimented with contextualized_topic_models, but they didn't yield valid or relevant results for the dataset.
+* **NomicBERT**: A high-level model, NomicBERT, was tested but was computationally expensive. It ran for over 6 hours on Kaggle without completing due to the size of the dataset (~40k examples). As a result, I pivoted to LDA and BERTopic, which were more efficient and provided better results for the dataset size.
+Final Models:
+-    BERTopic produced the most coherent and contextually relevant topics, making it the preferred model over LDA.
+-   LDA still served as a useful benchmark but performed sub-optimally for this context-rich dataset.
    
 
 to further work on this idea.- we can try to tokenize using GP4 tokenizer. then embedd using BERTNomic which is specifically made for topic modelling tasks of longer lenghts. 
