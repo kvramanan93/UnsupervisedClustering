@@ -1,32 +1,44 @@
-# UnsupervisedClustering
-- BERTopic visualization :
-![{4B18F474-3253-440E-9C3A-648C51A6F63B}](https://github.com/user-attachments/assets/cc633974-73b4-4caf-8cff-8c9c06d3ccd8)
-![{613EDF5A-4A9A-47A0-A835-405BE6F6E7CE}](https://github.com/user-attachments/assets/b9508546-d843-4036-b684-598b880bfe0e)
-- Topic model heirarchial clustering : ![{ECB7E0C7-A336-4FC1-924E-5F2CDD413A24}](https://github.com/user-attachments/assets/2f0122ee-9827-49c6-8540-a38d7f6f9b49)
+### Summary of the Project:
+1. **Preprocessing**:
+   - Cleaned the data by removing special characters, stopwords, and references to ensure the text data was suitable for embedding.
+   - Used **NomicBERT Embedded Text v1.5** to generate text embeddings, resulting in a **768-dimensional feature space**, providing a rich semantic representation of the textual data.
 
-Topic Modelling
-Topic Modeling Process:
-- Loading the Dataset: The dataset consists of approximately 40k text examples.
--  Cleaning the Text: The text is cleaned by removing stop words and unnecessary symbols.
--  Finding Important Words: Word factorization is used to identify important words in each document.
--  Topic Modeling with LDA: Latent Dirichlet Allocation (LDA) is applied to group similar words into topics based on word distributions.
--  Text Embeddings using BERT: BERT embeddings are used to capture the semantic meaning of each document. This is followed by:
-        UMAP: For dimensionality reduction.
-        HDBSCAN: For clustering the documents into meaningful groups.
-- Topic Labeling: The most relevant words from each topic are used to assign labels to the topics.
-- Visualization: The topics are visualized to display their distribution and relationships.
-    
-Approach:
-  Algorithms Used:
-* **LDA**: A classical topic modeling technique that identifies distinct topics by modeling the distribution of words across documents. It is effective for simpler, non-contextual tasks but has limitations in capturing deeper semantic meanings.
-* **BERTopic**: A more advanced method that uses BERT embeddings to capture semantic relationships within the text. Paired with UMAP for dimensionality reduction and HDBSCAN for clustering, BERTopic is well-suited for complex, context-dependent text datasets like the one in this project.
-  Challenges and Solutions:
-* **Contextualized Topic Models**: I experimented with contextualized_topic_models, but they didn't yield valid or relevant results for the dataset.
-* **NomicBERT**: A high-level model, NomicBERT, was tested but was computationally expensive. It ran for over 6 hours on Kaggle without completing due to the size of the dataset (~40k examples). As a result, I pivoted to LDA and BERTopic, which were more efficient and provided better results for the dataset size.
-Final Models:
--    BERTopic produced the most coherent and contextually relevant topics, making it the preferred model over LDA.
--   LDA still served as a useful benchmark but performed sub-optimally for this context-rich dataset.
-   
+2. **Dimensionality Reduction**:
+   - Experimented with **UMAP** and **PCA** for reducing the high-dimensional embeddings.
+   - Found that **UMAP** produced better results in terms of preserving the structure of the data, enabling a more meaningful clustering outcome.
 
-For future implementations we can try to tokenize using GP4 tokenizer. then embedd using BERTNomic which is specifically made for topic modelling tasks of longer lenghts. 
-We can even use ChatGPT or other models from OpenAI to generate labels, summaries, phrases.
+3. **Feature Learning**:
+   - Implemented an **encoder-decoder model** to further refine the embeddings post-dimension reduction, ensuring the model learned good features for downstream tasks.
+   - This step helped in capturing non-linear relationships and ensuring the reduced embeddings retained key information.
+
+4. **Clustering**:
+   - Performed **KMeans clustering** on the encoded embeddings.
+   - Initialized with **KMeans++** to improve the convergence speed and achieve better centroid initialization.
+   - Through experimentation, determined that **150 clusters** provided the best balance between granularity and clustering quality for the model.
+
+5. **Feature Extraction**:
+   - Utilized **TF-IDF vectorizer** to identify the top feature names for each cluster, providing interpretability for each cluster's main topics.
+   - Passed these sets of words through **Google Flan-T5 (small)** for text generation, which produced concise labels or representative terms for each cluster, aiding in understanding the cluster content.
+
+### Major Challenges Faced:
+1. **Balancing Dimensionality Reduction and Feature Loss**:
+   - Struggled with finding the right balance between reducing dimensionality enough to make clustering efficient while retaining the critical features and structure of the data. This required extensive experimentation with **UMAP** and **PCA**.
+
+2. **Finding the Optimal Number of Clusters**:
+   - Determining the appropriate number of clusters was challenging, as too few clusters resulted in overlapping topics, while too many led to over-segmentation. The **elbow method** and **silhouette score** helped, to settle on **150 clusters**.
+
+3. **Maintaining Feature Quality During Encoding**:
+   - Ensuring that the **encoder-decoder model** did not lose important information during the compression stage was another challenge. Fine-tuning the model and adjusting the size of the encoded representation was key to retaining meaningful features.
+
+4. **Managing Model Complexity**:
+   - The combined use of **UMAP**, **autoencoders**, and **KMeans** increased the complexity of the pipeline, making it necessary to monitor training times and memory usage, especially during the dimensionality reduction and clustering phases.
+
+5. **Interpreting Clusters**:
+   - After clustering, interpreting the results in a way that provided meaningful insights required iterative adjustments of the **TF-IDF vectorizer** parameters to ensure the top words accurately represented each cluster's theme.
+
+6. **Generating Accurate Summaries**:
+   - Using **Google Flan-T5** for generating concise terms for each cluster involved tuning the prompts to ensure that the generated output was focused and accurate. Achieving consistent and meaningful summaries required multiple iterations of prompt adjustments.
+
+### Additional Details:
+- **Resource Management**: Managing computational resources efficiently was critical, especially given the multiple models used (UMAP, autoencoders, clustering) and the high-dimensional nature of the embeddings.
+- **Iteration and Evaluation**: The project involved a cycle of **iteration and evaluation** at each stage—evaluating different dimensionality reduction techniques, clustering strategies, and methods for summarizing clusters, which was essential for refining the overall approach.
