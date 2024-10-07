@@ -1,44 +1,54 @@
-### Summary of the Project:
+
+### Updated Summary of the Project:
 1. **Preprocessing**:
-   - Cleaned the data by removing special characters, stopwords, and references to ensure the text data was suitable for embedding.
-   - Used **NomicBERT Embedded Text v1.5** to generate text embeddings, resulting in a **768-dimensional feature space**, providing a rich semantic representation of the textual data.
+   - Cleaned the data by removing special characters, stopwords, and references to ensure consistency and relevance.
+   - Used **NomicBERT Embedded Text v1.5** to generate text embeddings, resulting in a **768-dimensional feature space** that captures the semantic meanings of the documents.
 
 2. **Dimensionality Reduction**:
-   - Experimented with **UMAP** and **PCA** for reducing the high-dimensional embeddings.
-   - Found that **UMAP** produced better results in terms of preserving the structure of the data, enabling a more meaningful clustering outcome.
+   - Applied **UMAP** and **PCA** to reduce the high-dimensional embeddings, with **UMAP** providing better results in terms of preserving the structure of the data for clustering.
+   - The UMAP-reduced embeddings allowed for a more effective and interpretable clustering outcome compared to PCA.
 
 3. **Feature Learning**:
-   - Implemented an **encoder-decoder model** to further refine the embeddings post-dimension reduction, ensuring the model learned good features for downstream tasks.
-   - This step helped in capturing non-linear relationships and ensuring the reduced embeddings retained key information.
+   - Built an **autoencoder** model to learn a compressed representation of the reduced embeddings, ensuring that the model captured important features even after dimensionality reduction.
+   - This step helped retain non-linear relationships in the data and improved the subsequent clustering process.
 
 4. **Clustering**:
-   - Performed **KMeans clustering** on the encoded embeddings.
-   - Initialized with **KMeans++** to improve the convergence speed and achieve better centroid initialization.
-   - Through experimentation, determined that **150 clusters** provided the best balance between granularity and clustering quality for the model.
+   - Used **KMeans clustering** on the encoded embeddings, initialized with **KMeans++** to optimize centroid initialization and convergence speed.
+   - Through experimentation, determined that **150 clusters** provided an optimal balance between capturing meaningful groupings and maintaining a manageable number of clusters.
 
-5. **Feature Extraction**:
-   - Utilized **TF-IDF vectorizer** to identify the top feature names for each cluster, providing interpretability for each cluster's main topics.
-   - Passed these sets of words through **Google Flan-T5 (small)** for text generation, which produced concise labels or representative terms for each cluster, aiding in understanding the cluster content.
+5. **Keyword Extraction**:
+   - Utilized **KeyBERT** instead of traditional TF-IDF to extract the most relevant keywords for each cluster, taking advantage of **BERT-based embeddings** for more context-aware keyword extraction.
+   - This allowed for a better representation of the key themes in each cluster, as it considered the semantic relationships between words.
+
+6. **Representative Term Generation**:
+   - Leveraged a **GPT-based model** to generate a single representative term or label for each cluster's top keywords. This provided concise labels that summarized the central theme of each cluster.
+   - This approach improved the interpretability of the clusters by generating short, meaningful descriptors based on the extracted keywords.
+
+7. **Visualization**:
+   - Visualized the clusters using **UMAP** for dimensionality reduction to 2D space, followed by a **scatter plot** colored by cluster labels.
+   - The visualization provided a clear representation of the clustering structure, showing how well-separated the clusters were and highlighting relationships between different text entries.
 
 ### Major Challenges Faced:
-1. **Balancing Dimensionality Reduction and Feature Loss**:
-   - Struggled with finding the right balance between reducing dimensionality enough to make clustering efficient while retaining the critical features and structure of the data. This required extensive experimentation with **UMAP** and **PCA**.
+1. **Balancing Dimensionality Reduction and Feature Retention**:
+   - Finding the right balance between reducing dimensionality and retaining critical features was challenging, requiring experimentation with **UMAP** and **autoencoders** to achieve a suitable representation.
+   
+2. **Optimizing Cluster Numbers**:
+   - Determining the appropriate number of clusters for **KMeans** was non-trivial, as too few clusters resulted in overlapping themes, while too many clusters led to fragmentation. This required careful analysis using methods like the **elbow method** and **silhouette scores**.
 
-2. **Finding the Optimal Number of Clusters**:
-   - Determining the appropriate number of clusters was challenging, as too few clusters resulted in overlapping topics, while too many led to over-segmentation. The **elbow method** and **silhouette score** helped, to settle on **150 clusters**.
+3. **Maintaining Feature Quality in Encoded Space**:
+   - Ensuring that the **autoencoder** retained key features during the encoding and decoding process required fine-tuning the architecture and parameters to prevent loss of important information.
 
-3. **Maintaining Feature Quality During Encoding**:
-   - Ensuring that the **encoder-decoder model** did not lose important information during the compression stage was another challenge. Fine-tuning the model and adjusting the size of the encoded representation was key to retaining meaningful features.
+4. **Generating Accurate and Concise Summaries**:
+   - Using **GPT** to generate representative terms for each cluster involved refining prompts and adjusting parameters like **temperature** and **max tokens** to ensure that the outputs were focused and consistent across clusters.
 
-4. **Managing Model Complexity**:
-   - The combined use of **UMAP**, **autoencoders**, and **KMeans** increased the complexity of the pipeline, making it necessary to monitor training times and memory usage, especially during the dimensionality reduction and clustering phases.
+5. **Keyword Extraction Complexity**:
+   - Transitioning from **TF-IDF** to **KeyBERT** introduced additional complexities in managing large sets of documents and ensuring that the extracted keywords truly represented each cluster's essence.
 
-5. **Interpreting Clusters**:
-   - After clustering, interpreting the results in a way that provided meaningful insights required iterative adjustments of the **TF-IDF vectorizer** parameters to ensure the top words accurately represented each cluster's theme.
+6. **Resource Management**:
+   - The combination of models (UMAP, autoencoders, GPT-based models) required careful **resource management** to handle the computational load, particularly during dimensionality reduction and clustering phases.
 
-6. **Generating Accurate Summaries**:
-   - Using **Google Flan-T5** for generating concise terms for each cluster involved tuning the prompts to ensure that the generated output was focused and accurate. Achieving consistent and meaningful summaries required multiple iterations of prompt adjustments.
+### Additional Insights:
+- **Iterative Process**: The project involved an iterative cycle of **model evaluation, adjustment, and re-evaluation** to improve both clustering quality and keyword extraction.
+- **Focus on Interpretability**: The use of **GPT-generated terms** and **KeyBERT-based keywords** significantly enhanced the interpretability of each cluster, allowing for a clearer understanding of the themes present in the data.
+- **Practical Applications**: The refined clustering approach and keyword extraction can be applied to **chatbots**, **recommendation systems**, and **topic modeling**, where understanding the core themes of large text datasets is crucial.
 
-### Additional Details:
-- **Resource Management**: Managing computational resources efficiently was critical, especially given the multiple models used (UMAP, autoencoders, clustering) and the high-dimensional nature of the embeddings.
-- **Iteration and Evaluation**: The project involved a cycle of **iteration and evaluation** at each stage—evaluating different dimensionality reduction techniques, clustering strategies, and methods for summarizing clusters, which was essential for refining the overall approach.
